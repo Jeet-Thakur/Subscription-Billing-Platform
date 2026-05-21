@@ -5,7 +5,6 @@ import {
   activatePlan,
   createPlan,
   deactivatePlan,
-  deletePlan,
   getOrganizationPlans,
   type ApiErrorResponse as PlanApiErrorResponse,
   type Plan,
@@ -364,34 +363,6 @@ function DashboardPage() {
       await loadSummary();
     } catch (actionError) {
       setError(actionError as PlanApiErrorResponse);
-    } finally {
-      setActionLoadingId(null);
-    }
-  };
-
-  const handleDeletePlan = async (plan: Plan) => {
-    const confirmed = window.confirm(`Delete ${plan.name}?`);
-
-    if (!confirmed) {
-      return;
-    }
-
-    setActionLoadingId(plan.id);
-    setError(null);
-    setSuccessMessage("");
-
-    try {
-      await deletePlan(plan.id);
-      setSuccessMessage("Plan deleted.");
-
-      if (editingPlanId === plan.id) {
-        resetPlanForm();
-      }
-
-      await loadPlans();
-      await loadSummary();
-    } catch (deleteError) {
-      setError(deleteError as PlanApiErrorResponse);
     } finally {
       setActionLoadingId(null);
     }
@@ -825,14 +796,6 @@ function DashboardPage() {
                               className="w-full rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                               {loadingThisRow ? "Please wait..." : plan.is_active ? "Deactivate" : "Activate"}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => void handleDeletePlan(plan)}
-                              disabled={loadingThisRow}
-                              className="w-full rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 transition hover:border-rose-300 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
-                            >
-                              Delete
                             </button>
                           </div>
                         </div>

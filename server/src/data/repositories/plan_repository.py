@@ -39,7 +39,7 @@ class PlanRepository:
 
         return plan
 
-    async def list_by_organization(self, organization_id: UUID, include_inactive: bool = False) -> list[Plan]:
+    async def list_by_organization(self, organization_id: UUID, include_inactive: bool = True) -> list[Plan]:
         query = select(Plan).where(
             Plan.organization_id == organization_id
         )
@@ -95,5 +95,6 @@ class PlanRepository:
             setattr(plan, field_name, field_value)
 
         await self.db.flush()
+        await self.db.refresh(plan)
 
         return plan

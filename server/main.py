@@ -65,7 +65,7 @@ from src.api.rest.routes.organization_subscription_route import (
     router as organization_subscription_router,
 )
 from src.api.rest.routes.new_auth_route import router as new_auth_router
-from src.api.rest.routes.websocket_route import router as websocket_router
+
 import src.data.models.postgres
 from src.data.clients.postgres import Base, engine
 
@@ -110,7 +110,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     allow_headers=["*"],
 )
 
@@ -125,7 +125,6 @@ app.include_router(organization_dashboard_router)
 app.include_router(organization_lookup_router)
 app.include_router(organization_invoice_router)
 app.include_router(customer_invoice_router)
-app.include_router(websocket_router)
 
 if __name__ == "__main__": 
     uvicorn.run("main:app", host=settings.HOST, port=settings.PORT, reload=True)
