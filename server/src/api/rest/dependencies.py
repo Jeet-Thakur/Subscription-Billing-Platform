@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.exceptions.auth_exceptions import InvalidAuthorizationFormat, InvalidToken
 from src.core.services.new_auth_service import AuthService
+from src.core.services.organization_billing_service import OrganizationBillingService
 from src.core.security.JwtProvider import JWTProvider
 from src.schemas.auth_schema import AuthenticatedUserContext
 from src.data.clients.postgres import async_session_local
@@ -24,6 +25,11 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 async def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
 
     return AuthService(db)
+
+
+async def get_organization_billing_service(db: AsyncSession = Depends(get_db)) -> OrganizationBillingService:
+
+    return OrganizationBillingService(db)
 
 
 def _parse_uuid_claim(value: str | None, claim_name: str) -> UUID | None:

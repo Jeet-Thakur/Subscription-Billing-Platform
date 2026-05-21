@@ -5,13 +5,19 @@ from fastapi.responses import JSONResponse
 
 from src.core.exceptions.auth_exceptions import InvalidToken, InvalidAuthorizationFormat, GeneralException
 from src.core.exceptions.service_exceptions import (
+    ActiveSubscriptionsExistException,
     CustomerAlreadyExistsException,
     CustomerNotFoundException,
+    InvoiceNotFoundException,
     InactiveCustomerException,
     InactiveUserException,
     InsufficientPermissionsException,
     InvalidCredentialsException,
     OrganizationAlreadyExistsException,
+    OrganizationNotFoundException,
+    PlanNotFoundException,
+    SubscriptionAlreadyExistsException,
+    SubscriptionNotFoundException,
     UserAlreadyExistsException,
     UserNotFoundException,
 )
@@ -70,6 +76,66 @@ async def customer_already_exists_handler(request: Request, exc: CustomerAlready
 
 
 async def organization_already_exists_handler(request: Request, exc: OrganizationAlreadyExistsException):
+    return JSONResponse(
+        status_code=409,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+
+async def organization_not_found_handler(request: Request, exc: OrganizationNotFoundException):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+
+async def invoice_not_found_handler(request: Request, exc: InvoiceNotFoundException):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+
+async def plan_not_found_handler(request: Request, exc: PlanNotFoundException):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+
+async def subscription_not_found_handler(request: Request, exc: SubscriptionNotFoundException):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+
+async def subscription_already_exists_handler(request: Request, exc: SubscriptionAlreadyExistsException):
+    return JSONResponse(
+        status_code=409,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+
+async def active_subscriptions_exist_handler(request: Request, exc: ActiveSubscriptionsExistException):
     return JSONResponse(
         status_code=409,
         content={
