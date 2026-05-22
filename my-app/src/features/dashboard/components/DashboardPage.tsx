@@ -982,7 +982,6 @@ function DashboardPage() {
               {selectedSubscription ? (
                 <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                   {[
-                    { label: "Subscription ID", value: selectedSubscription.id },
                     { label: "Customer", value: `${selectedSubscription.customer.name} • ${selectedSubscription.customer.email}` },
                     { label: "Plan", value: selectedSubscription.plan.name },
                     { label: "Status", value: selectedSubscription.status },

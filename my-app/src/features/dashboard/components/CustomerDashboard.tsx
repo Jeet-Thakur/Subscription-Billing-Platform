@@ -56,12 +56,10 @@ function CustomerDashboard({ authContext, onLogout }: Props) {
   const [selectedPlan, setSelectedPlan] = useState<CustomerPlan | null>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<CustomerInvoice | null>(null);
   const [purchasePlanId, setPurchasePlanId] = useState("");
-  const [invoiceLookupId, setInvoiceLookupId] = useState("");
   const [loadingPlans, setLoadingPlans] = useState(true);
   const [loadingInvoices, setLoadingInvoices] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
   const [lookingUpPlan, setLookingUpPlan] = useState(false);
-  const [lookingUpInvoice, setLookingUpInvoice] = useState(false);
   const [error, setError] = useState<ApiErrorResponse | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -165,26 +163,6 @@ function CustomerDashboard({ authContext, onLogout }: Props) {
       setError(purchaseError as ApiErrorResponse);
     } finally {
       setPurchasing(false);
-    }
-  };
-
-  const handleInvoiceLookup = async (invoiceId: string) => {
-    if (!invoiceId.trim()) {
-      return;
-    }
-
-    setLookingUpInvoice(true);
-    setError(null);
-
-    try {
-      const invoice = invoices.find((item) => item.id === invoiceId.trim()) ?? null;
-
-      if (invoice) {
-        setSelectedInvoice(invoice);
-        setInvoiceLookupId(invoice.id);
-      }
-    } finally {
-      setLookingUpInvoice(false);
     }
   };
 
@@ -399,11 +377,11 @@ function CustomerDashboard({ authContext, onLogout }: Props) {
 
               {selectedPlan ? (
                 <div className="space-y-4">
-                  <div className="rounded-2xl border border-slate-200 px-5 py-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Plan ID</p>
-                    <p className="mt-2 break-words text-sm font-medium text-slate-900">{selectedPlan.id}</p>
-                  </div>
                   <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-slate-200 px-5 py-4">
+                      <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Plan name</p>
+                      <p className="mt-2 text-sm font-medium text-slate-900">{selectedPlan.name}</p>
+                    </div>
                     <div className="rounded-2xl border border-slate-200 px-5 py-4">
                       <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Billing interval</p>
                       <p className="mt-2 text-sm font-medium text-slate-900">{selectedPlan.billing_interval}</p>
@@ -462,7 +440,6 @@ function CustomerDashboard({ authContext, onLogout }: Props) {
                       }`}
                       onClick={() => {
                         setSelectedInvoice(invoice);
-                        setInvoiceLookupId(invoice.id);
                       }}
                     >
                       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -492,29 +469,6 @@ function CustomerDashboard({ authContext, onLogout }: Props) {
               <div className="mb-5">
                 <h2 className="text-lg font-semibold text-slate-900">Invoice details</h2>
                 <p className="mt-1 text-sm text-slate-500">Click an invoice to review the billing record.</p>
-              </div>
-
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <input
-                    value={invoiceLookupId}
-                    onChange={(event) => {
-                      setInvoiceLookupId(event.target.value);
-                      const invoice = invoices.find((item) => item.id === event.target.value) ?? null;
-                      setSelectedInvoice(invoice);
-                    }}
-                    className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
-                    placeholder="Paste an invoice ID"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => void handleInvoiceLookup(invoiceLookupId)}
-                    disabled={lookingUpInvoice}
-                    className="rounded-full border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {lookingUpInvoice ? "Searching..." : "Open"}
-                  </button>
-                </div>
               </div>
 
               {selectedInvoice ? (

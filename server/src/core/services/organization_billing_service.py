@@ -79,7 +79,7 @@ class OrganizationBillingService:
         plan = await self.plan_repository.get_by_id_and_organization(plan_id, actor.organization_id)
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         return plan
 
@@ -89,7 +89,7 @@ class OrganizationBillingService:
         plan = await self.plan_repository.get_by_id_and_organization(plan_id, actor.organization_id)
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         update_data = request.model_dump(exclude_unset=True)
 
@@ -105,7 +105,7 @@ class OrganizationBillingService:
         )
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         return await self.plan_repository.update_plan(plan, {"is_active": True})
 
@@ -115,7 +115,7 @@ class OrganizationBillingService:
         plan = await self.plan_repository.get_by_id_and_organization(plan_id, actor.organization_id)
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         return await self.plan_repository.update_plan(plan, {"is_active": False})
 
@@ -125,7 +125,7 @@ class OrganizationBillingService:
         plan = await self.plan_repository.get_by_id_and_organization(plan_id, actor.organization_id)
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         has_active_subscriptions = await self.subscription_repository.has_active_subscriptions_for_plan(
             organization_id=actor.organization_id,
@@ -133,7 +133,7 @@ class OrganizationBillingService:
         )
 
         if has_active_subscriptions:
-            raise ActiveSubscriptionsExistException(identifier=str(plan.id))
+            raise ActiveSubscriptionsExistException(identifier=str(None))
 
         await self.plan_repository.update_plan(plan, {"is_active": False})
 
@@ -166,7 +166,7 @@ class OrganizationBillingService:
         )
 
         if not subscription:
-            raise SubscriptionNotFoundException(identifier=str(subscription_id))
+            raise SubscriptionNotFoundException(identifier=str(None))
 
         return self._build_subscription_response(subscription)
 
@@ -253,7 +253,7 @@ class OrganizationBillingService:
         plan = await self.plan_repository.get_active_by_id(plan_id)
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         return plan
 
@@ -263,7 +263,7 @@ class OrganizationBillingService:
         organization = await self.organization_repository.get_by_id(organization_id)
 
         if not organization:
-            raise OrganizationNotFoundException(identifier=str(organization_id))
+            raise OrganizationNotFoundException(identifier=str(None))
 
         return organization
 
@@ -280,7 +280,7 @@ class OrganizationBillingService:
         invoice = await self.invoice_repository.get_by_id_and_organization(invoice_id, actor.organization_id)
 
         if not invoice:
-            raise InvoiceNotFoundException(identifier=str(invoice_id))
+            raise InvoiceNotFoundException(identifier=str(None))
 
         return self._build_invoice_response(invoice)
 
@@ -297,7 +297,7 @@ class OrganizationBillingService:
         invoice = await self.invoice_repository.get_by_id_and_customer(invoice_id, customer.id)
 
         if not invoice:
-            raise InvoiceNotFoundException(identifier=str(invoice_id))
+            raise InvoiceNotFoundException(identifier=str(None))
 
         return self._build_invoice_response(invoice)
 
@@ -311,7 +311,7 @@ class OrganizationBillingService:
         plan = await self.plan_repository.get_active_by_id(request.plan_id)
 
         if not plan:
-            raise PlanNotFoundException(identifier=str(request.plan_id))
+            raise PlanNotFoundException(identifier=str(None))
 
         existing_subscription = await self.subscription_repository.get_active_by_customer_and_plan(
             customer_id=customer.id,
@@ -319,7 +319,7 @@ class OrganizationBillingService:
         )
 
         if existing_subscription:
-            raise SubscriptionAlreadyExistsException(identifier=str(plan.id))
+            raise SubscriptionAlreadyExistsException(identifier=str(None))
 
         period_start = datetime.now(UTC)
         period_end = self._build_period_end(period_start, plan.billing_interval)
