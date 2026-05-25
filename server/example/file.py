@@ -1,4 +1,5 @@
-from sqlalchemy import MetaData, create_engine, Table, Column, Integer, String
+from sqlalchemy import Column, Integer, MetaData, String, Table, create_engine
+
 from src.config.settings import settings
 
 engine = create_engine(url=settings.DATABASE_URL)

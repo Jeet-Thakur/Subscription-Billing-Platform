@@ -1,3 +1,8 @@
+"""SQLAlchemy `User` model mapping.
+
+Defines the `users` table mapping including relationships to `Organization`.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime

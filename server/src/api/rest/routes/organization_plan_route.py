@@ -1,3 +1,9 @@
+"""Organization plan management routes.
+
+APIs for creating, updating, activating and listing organization plans
+and for customers to view available plans.
+"""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends

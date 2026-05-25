@@ -1,3 +1,8 @@
+"""Plan repository access layer.
+
+CRUD operations for `Plan` models used by billing services and APIs.
+"""
+
 from decimal import Decimal
 from uuid import UUID
 

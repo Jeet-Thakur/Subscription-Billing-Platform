@@ -1,3 +1,9 @@
+"""Dependency providers for FastAPI routes.
+
+Exports dependency callables such as `get_db`, service factories and the
+authenticated user context parser used across REST endpoints.
+"""
+
 from collections.abc import AsyncGenerator
 from uuid import UUID
 
@@ -5,11 +11,11 @@ from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.exceptions.auth_exceptions import InvalidAuthorizationFormat, InvalidToken
+from src.core.security.JwtProvider import JWTProvider
 from src.core.services.new_auth_service import AuthService
 from src.core.services.organization_billing_service import OrganizationBillingService
-from src.core.security.JwtProvider import JWTProvider
-from src.schemas.auth_schema import AuthenticatedUserContext
 from src.data.clients.postgres import async_session_local
+from src.schemas.auth_schema import AuthenticatedUserContext
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

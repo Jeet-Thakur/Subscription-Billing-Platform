@@ -1,3 +1,9 @@
+"""Organization dashboard and lookup routes.
+
+Exposes dashboard summary data and a lightweight organization name
+lookup endpoint used by frontend lookups.
+"""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query

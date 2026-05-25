@@ -1,35 +1,38 @@
+"""Authentication service business logic.
+
+Handles signup, login and user/customer registration. Uses repositories
+and the JWT provider to produce access tokens for authenticated actors.
+"""
+
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.data.repositories.customer_repository import CustomerRepository
-from src.data.repositories.organization_repository import OrganizationRepository
-from src.data.repositories.user_repository import UserRepository
-
-from src.core.security.JwtProvider import JWTProvider
-
-from src.utils.crypt import (
-    hash_password,
-    verify_password
-)
-
-from src.schemas.auth_schema import (
-    AuthenticatedUserContext,
-    AuthResponse,
-    LoginRequest,
-    OrganizationSignupRequest,
-)
-from src.schemas.customer_schema import CustomerCreateRequest, CustomerRegistrationResponse
-from src.schemas.user_schema import UserRegistrationRequest
 
 from src.core.exceptions.service_exceptions import (
     CustomerAlreadyExistsException,
     InactiveCustomerException,
     InactiveUserException,
     InsufficientPermissionsException,
-    UserAlreadyExistsException,
     InvalidCredentialsException,
     OrganizationAlreadyExistsException,
+    UserAlreadyExistsException,
     UserNotFoundException,
 )
+from src.core.security.JwtProvider import JWTProvider
+from src.data.repositories.customer_repository import CustomerRepository
+from src.data.repositories.organization_repository import OrganizationRepository
+from src.data.repositories.user_repository import UserRepository
+from src.schemas.auth_schema import (
+    AuthenticatedUserContext,
+    AuthResponse,
+    LoginRequest,
+    OrganizationSignupRequest,
+)
+from src.schemas.customer_schema import (
+    CustomerCreateRequest,
+    CustomerRegistrationResponse,
+)
+from src.schemas.user_schema import UserRegistrationRequest
+from src.utils.crypt import hash_password, verify_password
+from src.utils.validation import validate_password
 
 
 class AuthService:
@@ -52,6 +55,8 @@ class AuthService:
         existing_user = await self.user_repository.get_by_email(user.email)
         if existing_user:
             raise UserAlreadyExistsException(identifier=user.email)
+        
+        validate_password(user.password)
 
         created_organization = await self.organization_repository.create_organization(
             name=organization.name,
@@ -97,6 +102,7 @@ class AuthService:
         if existing_user:
             raise UserAlreadyExistsException(identifier=request.email)
 
+        validate_password(request.password)
         hashed_password = hash_password(request.password)
 
         return await self.user_repository.create_user(
@@ -110,6 +116,8 @@ class AuthService:
         existing_customer = await self.customer_repository.get_by_email(request.email)
         if existing_customer:
             raise CustomerAlreadyExistsException(identifier=request.email)
+        
+        validate_password(request.password)
 
         hashed_password = hash_password(request.password)
 

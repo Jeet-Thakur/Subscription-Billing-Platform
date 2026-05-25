@@ -1,3 +1,9 @@
+"""Customer request/response schemas.
+
+Contains validation for customer creation and the responses returned on
+registration and lookups.
+"""
+
 from datetime import datetime
 from uuid import UUID
 

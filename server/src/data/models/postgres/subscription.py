@@ -1,3 +1,9 @@
+"""SQLAlchemy `Subscription` model mapping.
+
+Represents organization subscriptions and relationships to customers,
+plans and invoices.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime

@@ -1,3 +1,9 @@
+"""Organization invoice routes.
+
+Provides endpoints to list and retrieve invoices for organizations and
+customers.
+"""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends

@@ -1,3 +1,8 @@
+"""SQLAlchemy `Payment` model mapping.
+
+Defines payment metadata stored for invoices and customers.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime

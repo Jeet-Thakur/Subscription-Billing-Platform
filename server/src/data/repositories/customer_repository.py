@@ -1,3 +1,8 @@
+"""Customer repository accessors.
+
+Methods to lookup and create customers in the database.
+"""
+
 from uuid import UUID
 
 from sqlalchemy import select

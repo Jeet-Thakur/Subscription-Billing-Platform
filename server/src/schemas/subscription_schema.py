@@ -1,3 +1,9 @@
+"""Schemas for subscriptions and related responses.
+
+Contains models used to represent subscription plans, customers, and
+organization subscription state returned by the billing APIs.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID

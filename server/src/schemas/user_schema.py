@@ -1,3 +1,9 @@
+"""Pydantic schemas for user and organization admin requests/responses.
+
+Defines request/response models used by authentication and user management
+endpoints, including validation helpers for email and password fields.
+"""
+
 from datetime import datetime
 from uuid import UUID
 

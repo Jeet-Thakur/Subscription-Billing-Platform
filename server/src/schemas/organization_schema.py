@@ -1,3 +1,9 @@
+"""Schemas for organization creation and responses.
+
+Includes validation for required fields and normalization helpers for
+slugs and billing emails used by organization-related endpoints.
+"""
+
 from datetime import datetime
 from uuid import UUID
 

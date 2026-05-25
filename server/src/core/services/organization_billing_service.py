@@ -1,26 +1,32 @@
+"""Billing service orchestrating organization-level operations.
+
+Provides business logic for plan creation, subscription management,
+invoices and dashboard aggregation. This service coordinates repository
+access and performs permission checks for organization actors.
+"""
+
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
-from uuid import UUID
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.exceptions.service_exceptions import (
     ActiveSubscriptionsExistException,
     CustomerNotFoundException,
-    InvoiceNotFoundException,
     InactiveCustomerException,
     InactiveUserException,
     InsufficientPermissionsException,
+    InvoiceNotFoundException,
     OrganizationNotFoundException,
     PlanNotFoundException,
     SubscriptionAlreadyExistsException,
     SubscriptionNotFoundException,
     UserNotFoundException,
 )
-from src.data.repositories.organization_repository import OrganizationRepository
 from src.data.repositories.customer_repository import CustomerRepository
 from src.data.repositories.invoice_repository import InvoiceRepository
+from src.data.repositories.organization_repository import OrganizationRepository
 from src.data.repositories.payment_repository import PaymentRepository
 from src.data.repositories.plan_repository import PlanRepository
 from src.data.repositories.subscription_repository import SubscriptionRepository
@@ -188,7 +194,9 @@ class OrganizationBillingService:
             days=days
         )
 
-        return [self._build_subscription_response(subscription) for subscription in subscriptions]
+        return [self._build_subscription_response(subscription) 
+                for subscription in subscriptions
+                ]
 
     async def get_dashboard_summary(
         self,
@@ -197,13 +205,27 @@ class OrganizationBillingService:
     ) -> DashboardSummaryResponse:
         actor = await self._get_admin_user(auth_context)
 
-        total_subscriptions_count = await self.subscription_repository.get_total_subscriptions_count(actor.organization_id)
-        active_subscriptions_count = await self.subscription_repository.get_active_subscriptions_count(actor.organization_id)
-        cancelled_subscriptions_count = await self.subscription_repository.get_cancelled_subscriptions_count(actor.organization_id)
-        monthly_recurring_revenue = await self.subscription_repository.get_monthly_recurring_revenue(actor.organization_id)
-        revenue_by_plan_rows = await self.subscription_repository.get_revenue_grouped_by_plan(actor.organization_id)
-        subscription_count_rows = await self.subscription_repository.get_subscription_count_grouped_by_plan(actor.organization_id)
-        recent_subscriptions = await self.subscription_repository.get_recent_subscriptions(actor.organization_id, recent_limit)
+        total_subscriptions_count = (
+            await self.subscription_repository.get_total_subscriptions_count(actor.organization_id)
+            )
+        active_subscriptions_count = (
+            await self.subscription_repository.get_active_subscriptions_count(actor.organization_id)
+                                      )
+        cancelled_subscriptions_count = (
+            await self.subscription_repository.get_cancelled_subscriptions_count(actor.organization_id)
+                                         )
+        monthly_recurring_revenue = (
+            await self.subscription_repository.get_monthly_recurring_revenue(actor.organization_id)
+                                    )
+        revenue_by_plan_rows = (
+            await self.subscription_repository.get_revenue_grouped_by_plan(actor.organization_id)
+                                )
+        subscription_count_rows = (
+            await self.subscription_repository.get_subscription_count_grouped_by_plan(actor.organization_id)
+        )
+        recent_subscriptions = (
+            await self.subscription_repository.get_recent_subscriptions(actor.organization_id, recent_limit)
+        )
 
         return DashboardSummaryResponse(
             total_subscriptions_count=total_subscriptions_count,
@@ -247,7 +269,11 @@ class OrganizationBillingService:
 
         return await self.plan_repository.list_active_plans()
 
-    async def get_available_plan(self, plan_id: UUID, auth_context: AuthenticatedUserContext):
+    async def get_available_plan(
+            self, 
+            plan_id: UUID, 
+            auth_context: AuthenticatedUserContext
+            ):
         await self._ensure_authenticated_actor(auth_context)
 
         plan = await self.plan_repository.get_active_by_id(plan_id)

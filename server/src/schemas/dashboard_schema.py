@@ -1,3 +1,9 @@
+"""Dashboard response schemas.
+
+Defines aggregated dashboard response types such as revenue summaries
+and recent subscription lists used by the organization dashboard APIs.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID

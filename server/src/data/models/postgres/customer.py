@@ -1,3 +1,9 @@
+"""SQLAlchemy `Customer` model mapping.
+
+Represents customers who belong to organizations and may have
+subscriptions, invoices and payment methods.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -67,10 +73,5 @@ class Customer(Base):
 
     payments: Mapped[list["Payment"]] = relationship(
         "Payment",
-        back_populates="customer"
-    )
-
-    payment_methods: Mapped[list["PaymentMethod"]] = relationship(
-        "PaymentMethod",
         back_populates="customer"
     )

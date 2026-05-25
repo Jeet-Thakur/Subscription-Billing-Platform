@@ -1,3 +1,9 @@
+"""Schemas for plan create/update and plan responses.
+
+Defines the Pydantic models for creating, updating and returning plan
+information used throughout the billing APIs.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID

@@ -1,3 +1,9 @@
+"""Invoice repository functions.
+
+Create and query invoice records, with helpful methods to fetch invoices
+by organization or customer including related entities.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID

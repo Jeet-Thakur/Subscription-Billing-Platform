@@ -1,3 +1,9 @@
+"""Subscription repository operations.
+
+Contains methods to create, query and aggregate subscriptions for an
+organization. Uses SQLAlchemy AsyncSession for DB interaction.
+"""
+
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from uuid import UUID

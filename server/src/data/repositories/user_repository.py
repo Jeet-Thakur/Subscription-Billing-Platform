@@ -1,3 +1,9 @@
+"""Repository for user data access.
+
+Provides CRUD operations for `User` objects using SQLAlchemy async
+sessions. All methods return ORM model instances.
+"""
+
 from uuid import UUID
 
 from sqlalchemy import select

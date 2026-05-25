@@ -1,3 +1,9 @@
+"""Routes for organization subscription management.
+
+Defines REST endpoints for listing, retrieving and purchasing
+subscriptions for organizations and customers.
+"""
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query

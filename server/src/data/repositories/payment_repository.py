@@ -1,3 +1,8 @@
+"""Payment repository utilities.
+
+Provides creation helper for payment records persisted to the database.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID

@@ -1,18 +1,27 @@
-# src/core/exceptions/handlers.py
+"""FastAPI exception handlers mapping domain exceptions to responses.
+
+Provides handler functions that convert custom service and auth
+exceptions into appropriate JSONResponse objects with HTTP status codes.
+"""
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from src.core.exceptions.auth_exceptions import InvalidToken, InvalidAuthorizationFormat, GeneralException
+from src.core.exceptions.auth_exceptions import (
+    GeneralException,
+    InvalidAuthorizationFormat,
+    InvalidPasswordException,
+    InvalidToken,
+)
 from src.core.exceptions.service_exceptions import (
     ActiveSubscriptionsExistException,
     CustomerAlreadyExistsException,
     CustomerNotFoundException,
-    InvoiceNotFoundException,
     InactiveCustomerException,
     InactiveUserException,
     InsufficientPermissionsException,
     InvalidCredentialsException,
+    InvoiceNotFoundException,
     OrganizationAlreadyExistsException,
     OrganizationNotFoundException,
     PlanNotFoundException,
@@ -192,6 +201,15 @@ async def insufficient_permissions_handler(request: Request, exc: InsufficientPe
 async def customer_not_found_handler(request: Request, exc: CustomerNotFoundException):
     return JSONResponse(
         status_code=404,
+        content={
+            "detail": exc.message,
+            **({"info": exc.details} if exc.details else {})
+        }
+    )
+
+async def invalid_password_exception_handler(request: Request, exc: InvalidPasswordException):
+    return JSONResponse(
+        status_code=400,
         content={
             "detail": exc.message,
             **({"info": exc.details} if exc.details else {})

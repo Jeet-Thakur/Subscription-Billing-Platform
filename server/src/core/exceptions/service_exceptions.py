@@ -1,3 +1,9 @@
+"""Service-level exceptions used across domain services.
+
+Defines structured exceptions that services raise for known error
+conditions; these are mapped to HTTP responses by exception handlers.
+"""
+
 
 class ServiceBaseException(Exception):
     def __init__(self, message: str, details: str = None):

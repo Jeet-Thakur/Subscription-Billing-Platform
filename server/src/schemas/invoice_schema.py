@@ -1,3 +1,9 @@
+"""Invoice related Pydantic schemas.
+
+Models describing invoice responses and collections used by invoice
+endpoints and reporting surfaces.
+"""
+
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID

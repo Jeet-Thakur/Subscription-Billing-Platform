@@ -1,3 +1,8 @@
+"""Organization repository.
+
+Data access methods for organization lookup and creation.
+"""
+
 from uuid import UUID
 
 from sqlalchemy import select
