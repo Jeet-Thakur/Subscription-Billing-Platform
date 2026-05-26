@@ -1,4 +1,8 @@
-# connection with the database code
+"""SQLAlchemy async database client configuration.
+
+Creates the async engine, session maker and declarative base used by the
+application to interact with the Postgres database using asyncpg.
+"""
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import declarative_base

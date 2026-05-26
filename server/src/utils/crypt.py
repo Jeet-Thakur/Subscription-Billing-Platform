@@ -1,3 +1,9 @@
+"""Password hashing utilities.
+
+Wraps `passlib` CryptContext to provide convenient helpers for hashing and
+verifying user and customer passwords.
+"""
+
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

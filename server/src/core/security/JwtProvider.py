@@ -1,7 +1,12 @@
-# src/core/security/jwt_provider.py
+"""JWT helper for creating and validating access tokens.
 
-from datetime import datetime, timedelta, UTC
-from jose import jwt, JWTError, ExpiredSignatureError
+Encapsulates creation and decoding of JWT access tokens used for
+authentication, centralizing secret and algorithm usage from settings.
+"""
+
+from datetime import UTC, datetime, timedelta
+
+from jose import ExpiredSignatureError, JWTError, jwt
 
 from src.config.settings import settings
 from src.core.exceptions.auth_exceptions import InvalidToken

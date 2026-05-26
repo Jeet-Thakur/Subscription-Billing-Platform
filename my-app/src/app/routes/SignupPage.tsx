@@ -1,11 +1,7 @@
-import SignupForm from "../../features/auth/components/SignupForm";
+import { Navigate } from "react-router-dom";
 
 function SignupPage() {
-  return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <SignupForm />
-    </div>
-  );
+  return <Navigate to="/auth?mode=organization-signup" replace />;
 }
 
 export default SignupPage;

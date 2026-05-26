@@ -1,8 +1,17 @@
+"""Authentication request/response schemas and context model.
+
+Defines login/signup payloads, auth responses and the runtime
+`AuthenticatedUserContext` used by dependencies and services.
+"""
+
 from uuid import UUID
 
 from pydantic import BaseModel, field_validator
 
-from src.schemas.organization_schema import OrganizationCreateRequest, OrganizationResponse
+from src.schemas.organization_schema import (
+    OrganizationCreateRequest,
+    OrganizationResponse,
+)
 from src.schemas.user_schema import OrganizationAdminCreateRequest, UserResponse
 
 

@@ -1,3 +1,9 @@
+"""Dependency providers for FastAPI routes.
+
+Exports dependency callables such as `get_db`, service factories and the
+authenticated user context parser used across REST endpoints.
+"""
+
 from collections.abc import AsyncGenerator
 from uuid import UUID
 
@@ -5,10 +11,11 @@ from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.exceptions.auth_exceptions import InvalidAuthorizationFormat, InvalidToken
-from src.core.services.new_auth_service import AuthService
 from src.core.security.JwtProvider import JWTProvider
-from src.schemas.auth_schema import AuthenticatedUserContext
+from src.core.services.new_auth_service import AuthService
+from src.core.services.organization_billing_service import OrganizationBillingService
 from src.data.clients.postgres import async_session_local
+from src.schemas.auth_schema import AuthenticatedUserContext
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
@@ -17,6 +24,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         try:
             yield session
             await session.commit()
+            
         except Exception:
             await session.rollback()
             raise
@@ -24,6 +32,11 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 async def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
 
     return AuthService(db)
+
+
+async def get_organization_billing_service(db: AsyncSession = Depends(get_db)) -> OrganizationBillingService:
+
+    return OrganizationBillingService(db)
 
 
 def _parse_uuid_claim(value: str | None, claim_name: str) -> UUID | None:

@@ -1,3 +1,9 @@
+"""SQLAlchemy `Invoice` model mapping.
+
+Encapsulates invoice fields and relationships to subscriptions, customers
+and payments.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime

@@ -1,11 +1,7 @@
-import LoginForm from "../../features/auth/components/LoginForm";
+import { Navigate } from "react-router-dom";
 
 function LoginPage() {
-  return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <LoginForm />
-    </div>
-  );
+  return <Navigate to="/auth?mode=customer-login" replace />;
 }
 
 export default LoginPage;

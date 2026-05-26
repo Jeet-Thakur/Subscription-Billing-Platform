@@ -1,11 +1,20 @@
-from urllib import request
+"""Custom authentication middleware.
 
-from jose import JWTError
-from starlette.middleware.base import BaseHTTPMiddleware
+Validates the `Authorization` header for protected endpoints and decodes
+JWTs using the configured `JWTProvider`. Excluded paths and OPTIONS are
+skipped to allow docs and public auth endpoints.
+"""
+
+
 from fastapi import Request
 from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
-from src.core.exceptions.auth_exceptions import InvalidAuthorizationFormat, InvalidToken, GeneralException
+from src.core.exceptions.auth_exceptions import (
+    GeneralException,
+    InvalidAuthorizationFormat,
+    InvalidToken,
+)
 from src.core.security.JwtProvider import JWTProvider
 
 

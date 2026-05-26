@@ -1,23 +1,32 @@
+"""Authentication REST routes.
+
+Routes for organization signup/login, customer registration and user
+management endpoints that delegate to the `AuthService`.
+"""
+
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer
 
-from src.api.rest.dependencies import (
-    get_authenticated_user_context,
-    get_auth_service
-)
-
+from src.api.rest.dependencies import get_auth_service, get_authenticated_user_context
 from src.core.services.new_auth_service import AuthService
-
 from src.schemas.auth_schema import (
     AuthenticatedUserContext,
-    LoginRequest,
     AuthResponse,
+    LoginRequest,
     OrganizationSignupRequest,
     OrganizationSignupResponse,
 )
-from src.schemas.customer_schema import CustomerCreateRequest, CustomerRegistrationResponse, CustomerResponse
+from src.schemas.customer_schema import (
+    CustomerCreateRequest,
+    CustomerRegistrationResponse,
+    CustomerResponse,
+)
 from src.schemas.organization_schema import OrganizationResponse
-from src.schemas.user_schema import UserRegistrationRequest, UserRegistrationResponse, UserResponse
+from src.schemas.user_schema import (
+    UserRegistrationRequest,
+    UserRegistrationResponse,
+    UserResponse,
+)
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 security = HTTPBearer()

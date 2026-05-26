@@ -1,3 +1,9 @@
+"""Schemas for organization creation and responses.
+
+Includes validation for required fields and normalization helpers for
+slugs and billing emails used by organization-related endpoints.
+"""
+
 from datetime import datetime
 from uuid import UUID
 
@@ -39,5 +45,12 @@ class OrganizationResponse(BaseModel):
     stripe_account_id: str | None
     created_at: datetime
     updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class OrganizationNameResponse(BaseModel):
+    id: UUID
+    name: str
 
     model_config = ConfigDict(from_attributes=True)

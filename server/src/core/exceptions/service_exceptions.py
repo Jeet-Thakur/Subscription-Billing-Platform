@@ -1,3 +1,9 @@
+"""Service-level exceptions used across domain services.
+
+Defines structured exceptions that services raise for known error
+conditions; these are mapped to HTTP responses by exception handlers.
+"""
+
 
 class ServiceBaseException(Exception):
     def __init__(self, message: str, details: str = None):
@@ -27,6 +33,54 @@ class OrganizationAlreadyExistsException(ServiceBaseException):
         super().__init__(
             message="Organization already exists",
             details=f"Organization '{slug}' is already registered"
+        )
+
+
+class OrganizationNotFoundException(ServiceBaseException):
+    def __init__(self, identifier: str = None):
+        super().__init__(
+            message="Organization not found",
+            details=f"Organization '{identifier}' does not exist" if identifier else None
+        )
+
+
+class InvoiceNotFoundException(ServiceBaseException):
+    def __init__(self, identifier: str = None):
+        super().__init__(
+            message="Invoice not found",
+            details=f"Invoice '{identifier}' does not exist" if identifier else None
+        )
+
+
+class PlanNotFoundException(ServiceBaseException):
+    def __init__(self, identifier: str = None):
+        super().__init__(
+            message="Plan not found",
+            details=f"Plan '{identifier}' does not exist" if identifier else None
+        )
+
+
+class SubscriptionNotFoundException(ServiceBaseException):
+    def __init__(self, identifier: str = None):
+        super().__init__(
+            message="Subscription not found",
+            details=f"Subscription '{identifier}' does not exist" if identifier else None
+        )
+
+
+class SubscriptionAlreadyExistsException(ServiceBaseException):
+    def __init__(self, identifier: str):
+        super().__init__(
+            message="Subscription already exists",
+            details=f"Subscription for plan '{identifier}' is already active"
+        )
+
+
+class ActiveSubscriptionsExistException(ServiceBaseException):
+    def __init__(self, identifier: str):
+        super().__init__(
+            message="Active subscriptions exist",
+            details=f"Plan '{identifier}' still has active subscriptions"
         )
 
 

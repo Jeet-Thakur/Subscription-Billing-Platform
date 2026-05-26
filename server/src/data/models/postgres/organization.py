@@ -1,3 +1,9 @@
+"""SQLAlchemy `Organization` model mapping.
+
+Represents an organization and its related children such as users, plans
+and subscriptions.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -76,10 +82,5 @@ class Organization(Base):
 
     payments: Mapped[list["Payment"]] = relationship(
         "Payment",
-        back_populates="organization"
-    )
-
-    payment_methods: Mapped[list["PaymentMethod"]] = relationship(
-        "PaymentMethod",
         back_populates="organization"
     )
