@@ -5,6 +5,7 @@ used throughout the server for configuration values like the database URL
 and JWT secrets.
 """
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,6 +20,15 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str = "jeetsecret"
     ALGORITHM: str = "HS256"
+
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
+
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def parse_origins(cls, v):
+        if isinstance(v, str):
+            return [origin.strip() for origin in v.split(",")]
+        return v
 
     model_config = SettingsConfigDict(
         env_file=".env",
