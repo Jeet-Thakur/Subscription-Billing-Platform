@@ -122,7 +122,7 @@ app.add_exception_handler(InsufficientPermissionsException, insufficient_permiss
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     allow_headers=["*"],
@@ -141,4 +141,4 @@ app.include_router(organization_invoice_router)
 app.include_router(customer_invoice_router)
 
 if __name__ == "__main__": 
-    uvicorn.run("main:app", host=settings.HOST, port=settings.PORT, reload=True)
+    uvicorn.run("main:app", host=settings.HOST, port=settings.PORT)
